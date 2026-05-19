@@ -1,0 +1,62 @@
+name: Release
+
+# Fires when a tag is pushed to the public repo. Runs goreleaser against
+# .goreleaser.yml, builds cross-platform binaries, publishes a GitHub
+# Release with the archives + checksums attached.
+#
+# Only effective in the public repo (github.com/bcdock/cli). In the
+# upstream private monorepo this directory sits under
+# services/bcdock-cli/.github/ which GitHub ignores - only repo-root
+# .github/workflows/ is read. After the mirror filter promotes
+# services/bcdock-cli/ to root, this workflow becomes active.
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:        # manual trigger for dry runs from the Actions tab
+
+permissions:
+  contents: write           # required to create the GitHub Release
+
+jobs:
+  goreleaser:
+    name: goreleaser
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0    # goreleaser needs full history for changelog
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+          cache: true
+
+      - name: Sanity check
+        run: |
+          go vet ./...
+          go test ./...
+
+      - name: Validate goreleaser config
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: '~> v2'
+          args: check
+
+      - name: Run goreleaser
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: '~> v2'
+          args: release --clean
+        env:
+          # GITHUB_TOKEN creates the GitHub Release in this repo.
+          # HOMEBREW_TAP_TOKEN is a fine-grained PAT (Contents: Read+Write on
+          # bcdock/homebrew-tap only) that lets goreleaser commit the formula.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
