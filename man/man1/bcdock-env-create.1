@@ -1,0 +1,104 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-env-create - Create a new BC environment
+
+
+.SH SYNOPSIS
+\fBbcdock env create [flags]\fP
+
+
+.SH DESCRIPTION
+Create a new BC environment.
+
+.PP
+When --version / --country / --region are all omitted and stdin is a terminal,
+the CLI fetches fast configs (versions with pre-built VM images) across all
+regions and prompts you to pick one - avoiding the ~78 min image build that
+happens when no pre-built image exists.
+
+.PP
+Pass the flags explicitly to skip the picker (scripts, CI, agent use).
+
+.PP
+Exit codes:
+  0   ok
+  1   general error
+  3   auth failure (missing or invalid token)
+  4   rate-limited
+  10  provisioning failed (only with --wait and env status=failed)
+
+
+.SH OPTIONS
+\fB--country\fP=""
+	Country localisation (e.g. au, us, gb)
+
+.PP
+\fB-h\fP, \fB--help\fP[=false]
+	help for create
+
+.PP
+\fB--multi-tenant\fP[=true]
+	Multi-tenant mode
+
+.PP
+\fB--name\fP=""
+	Environment name
+
+.PP
+\fB--region\fP=""
+	Azure region
+
+.PP
+\fB--type\fP="sandbox"
+	Environment type: sandbox or onprem
+
+.PP
+\fB--version\fP=""
+	BC version (e.g. 25.5)
+
+.PP
+\fB--wait\fP[=false]
+	Block until running or failed
+
+.PP
+\fB--wait-timeout\fP=0s
+	Max time to wait (default: 30m)
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock env create
+  bcdock env create --name my-env --version 25.5 --country au --region westus2
+  bcdock env create --name my-env --version 25.5 --country au --region westus2 --wait
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-env(1)\fP

@@ -1,0 +1,12 @@
+#!/usr/bin/env node
+'use strict';
+const { spawnSync } = require('node:child_process');
+const path = require('node:path');
+
+const native = path.join(__dirname, process.platform === 'win32' ? 'bcdock.exe' : 'bcdock-native');
+const result = spawnSync(native, process.argv.slice(2), { stdio: 'inherit' });
+if (result.error) {
+  process.stderr.write(`bcdock: ${result.error.message}\n`);
+  process.exit(1);
+}
+process.exit(result.status ?? 1);
