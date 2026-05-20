@@ -1,0 +1,70 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-env-get - Get details of an environment
+
+
+.SH SYNOPSIS
+\fBbcdock env get  [flags]\fP
+
+
+.SH DESCRIPTION
+Show full details of one environment - connection endpoints (web client,
+SOAP, OData v4, dev endpoint, downloads), BC admin credentials, status,
+and timestamps.
+
+.PP
+Output formats:
+  -o table  (default) vertical key/value layout, one field per line
+  -o json   the full env record from the API (use for scripting)
+  -o csv    the same compact row as 'env list' (one entry)
+
+.PP
+Exit codes:
+  0   ok
+  3   auth failure (missing or invalid token)
+  4   rate-limited
+  5   environment not found
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for get
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock env get my-env
+  bcdock env get my-env -o json
+  bcdock env get a1b2c3d4
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-env(1)\fP

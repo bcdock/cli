@@ -1,0 +1,90 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-env-launch-json - Emit a VS Code launch.json config for publishing to a BC environment
+
+
+.SH SYNOPSIS
+\fBbcdock env launch-json  [flags]\fP
+
+
+.SH DESCRIPTION
+Generate the launch.json configuration block VS Code's AL extension needs
+to publish (Ctrl+F5) to a BCDock environment, derived from the env's DTO.
+
+.PP
+By default emits a complete launch.json (single configuration in the array)
+to stdout. With --out, writes the file (creating parent dirs).
+
+.PP
+The values are derived from 'bcdock env get':
+  server         = origin of devEndpointUrl
+  serverInstance = first path segment of devEndpointUrl (BC-dev / {name}-dev)
+  authentication = "UserPassword"  (BCDock containers don't ship Entra auth)
+  tenant         = "default"       (BCDock ships single-tenant=default for MT)
+
+.PP
+Credentials are NOT written to launch.json - VS Code prompts on first
+publish and caches in the OS credential store.
+
+.PP
+Exit codes:
+  0   ok
+  1   general error (env not ready, no devEndpointUrl yet)
+  3   auth failure (missing or invalid token)
+  5   environment not found
+
+
+.SH OPTIONS
+\fB--config-name\fP=""
+	Name field for the configuration (default: 'BCDock: \&')
+
+.PP
+\fB-h\fP, \fB--help\fP[=false]
+	help for launch-json
+
+.PP
+\fB--launch-browser\fP[=false]
+	Set launchBrowser=true (VS Code opens browser after publish; URL may not match the env's serverInstance routing)
+
+.PP
+\fB--out\fP=""
+	Write launch.json to this path instead of stdout
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock env launch-json my-env
+  bcdock env launch-json my-env --out .vscode/launch.json
+  bcdock env launch-json my-env --config-name "BC sandbox"
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-env(1)\fP
