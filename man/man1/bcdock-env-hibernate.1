@@ -1,0 +1,76 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-env-hibernate - Hibernate an environment (saves to blob storage, frees pool slot)
+
+
+.SH SYNOPSIS
+\fBbcdock env hibernate  [flags]\fP
+
+
+.SH DESCRIPTION
+Save the environment state to blob storage and free its pool VM. The
+environment transitions from 'running' to 'hibernated'. While hibernated, only
+the base-fee is billed (no active-rate charges).
+
+.PP
+Use 'bcdock env resume' to bring it back. Use --wait to block until hibernation
+completes instead of returning immediately.
+
+.PP
+Exit codes:
+  0   ok
+  3   auth failure (missing or invalid token)
+  4   rate-limited
+  5   environment not found
+  10  hibernation failed
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for hibernate
+
+.PP
+\fB--wait\fP[=false]
+	Block until hibernated or failed
+
+.PP
+\fB--wait-timeout\fP=0s
+	Max time to wait (default: 10m)
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock env hibernate my-env
+  bcdock env hibernate my-env --wait
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-env(1)\fP
