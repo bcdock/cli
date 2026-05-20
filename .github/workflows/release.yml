@@ -1,0 +1,113 @@
+name: Release
+
+# Fires when a tag is pushed to the public repo. Runs goreleaser against
+# .goreleaser.yml, builds cross-platform binaries, publishes a GitHub
+# Release with the archives + checksums attached.
+#
+# Only effective in the public repo (github.com/bcdock/cli). In the
+# upstream private monorepo this directory sits under
+# services/bcdock-cli/.github/ which GitHub ignores - only repo-root
+# .github/workflows/ is read. After the mirror filter promotes
+# services/bcdock-cli/ to root, this workflow becomes active.
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:        # manual trigger for dry runs from the Actions tab
+
+permissions:
+  contents: write           # required to create the GitHub Release
+
+jobs:
+  goreleaser:
+    name: goreleaser
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0    # goreleaser needs full history for changelog
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+          cache: true
+
+      - name: Sanity check
+        run: |
+          go vet ./...
+          go test ./...
+
+      - name: Validate goreleaser config
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: '~> v2'
+          args: check
+
+      - name: Run goreleaser
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: '~> v2'
+          args: release --clean
+        env:
+          # GITHUB_TOKEN creates the GitHub Release in this repo.
+          # HOMEBREW_TAP_TOKEN is a fine-grained PAT (Contents: Read+Write on
+          # bcdock/homebrew-tap only) that lets goreleaser commit the formula.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+
+  npm-publish:
+    name: Publish to npm
+    needs: goreleaser
+    runs-on: ubuntu-latest
+    # id-token:write enables npm trusted publishing (OIDC - no stored token needed).
+    # Trust configured via: npm trust github @bcdock/cli --repo bcdock/cli --file release.yml
+    permissions:
+      contents: read
+      pull-requests: read
+      packages: read
+      id-token: write
+    defaults:
+      run:
+        working-directory: npm
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          # No registry-url: it creates an .npmrc with _authToken=${NODE_AUTH_TOKEN}
+          # which conflicts with OIDC trusted publishing.
+
+      - name: Upgrade npm (trusted publishing requires >= 11.10.0)
+        run: npm install -g npm@latest
+
+      - name: Install dependencies
+        run: npm install --ignore-scripts
+
+      - name: Set version from tag
+        run: npm version "${GITHUB_REF_NAME#v}" --no-git-tag-version
+
+      - name: Pack dry run
+        run: npm pack --dry-run
+
+      - name: Publish
+        run: |
+          TAG_NAME="$GITHUB_REF_NAME"
+          if [[ "$TAG_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+-[A-Za-z0-9] ]]; then
+            npm publish --access public --tag next
+          else
+            npm publish --access public
+          fi
+
+      - name: Post-publish smoke
+        run: |
+          echo "Waiting 30s for npm registry propagation..."
+          sleep 30
+          VER="${GITHUB_REF_NAME#v}"
+          npx -y "@bcdock/cli@${VER}" --version

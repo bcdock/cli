@@ -1,0 +1,66 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock - BCDock CLI \- manage Business Central environments
+
+
+.SH SYNOPSIS
+\fBbcdock [flags]\fP
+
+
+.SH DESCRIPTION
+Welcome to BC[)OCK! Managed Business Central sandboxes in cloud.
+
+.PP
+BCDock CLI wraps the BCDock Platform API for use in terminals,
+scripts, and AI agent workflows.
+
+.PP
+Set BCDOCK_TOKEN to authenticate without --token.  (env: BCDOCK_TOKEN)
+Set BCDOCK_API_URL to target a different API endpoint.  (env: BCDOCK_API_URL)
+
+.PP
+See 'bcdock help authentication' for token-source precedence and CI/CD guidance.
+See 'bcdock help agent-workflows' for recipes for Claude, Copilot, and similar.
+
+
+.SH OPTIONS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB-h\fP, \fB--help\fP[=false]
+	help for bcdock
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock env list
+  bcdock env create --name my-env --version 25.5 --country au --region westus2 --wait
+  bcdock auth whoami
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-al(1)\fP, \fBbcdock-artifacts(1)\fP, \fBbcdock-auth(1)\fP, \fBbcdock-companies(1)\fP, \fBbcdock-completion(1)\fP, \fBbcdock-config(1)\fP, \fBbcdock-env(1)\fP, \fBbcdock-me(1)\fP, \fBbcdock-usage(1)\fP, \fBbcdock-version(1)\fP

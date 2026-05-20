@@ -1,0 +1,63 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-version - Print the bcdock CLI version
+
+
+.SH SYNOPSIS
+\fBbcdock version [flags]\fP
+
+
+.SH DESCRIPTION
+Print the bcdock CLI version, git commit, and API major version.
+
+.PP
+This command never checks auth or calls the API. Use it to confirm which
+CLI build is installed. The CLI probes the platform for a minimum-version
+requirement on each command run and warns to stderr when upgrade is needed.
+
+.PP
+Exit codes:
+  0   ok
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for version
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock version
+  bcdock version -o json
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock(1)\fP

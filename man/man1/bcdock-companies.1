@@ -1,0 +1,64 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-companies - Manage companies (billing entities)
+
+
+.SH SYNOPSIS
+\fBbcdock companies [flags]\fP
+
+
+.SH DESCRIPTION
+List and switch between companies.
+
+.PP
+A company is the billing entity in BCDock. Use 'companies switch' to change
+which company's environments and billing context are active.
+
+.PP
+Exit codes:
+  0   ok
+  1   general error
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for companies
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock companies list
+  bcdock companies switch contoso
+  bcdock companies switch 3072f5a0-0000-0000-0000-000000000000
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock(1)\fP, \fBbcdock-companies-list(1)\fP, \fBbcdock-companies-switch(1)\fP

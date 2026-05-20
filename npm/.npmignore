@@ -1,0 +1,8 @@
+# Native binaries are downloaded at install time; never bundle them in the tarball.
+# bin/bcdock (JS shim launcher) IS included - it's the package.json bin entry point.
+bin/bcdock-native
+bin/bcdock.exe
+bin/.version
+
+# Test file not needed at runtime.
+test.js
