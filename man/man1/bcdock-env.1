@@ -1,0 +1,71 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-env - Manage Business Central environments
+
+
+.SH SYNOPSIS
+\fBbcdock env [flags]\fP
+
+
+.SH DESCRIPTION
+Create, list, inspect, and delete BC environments.
+
+.PP
+Config discovery: BC versions with a pre-built VM image (~7-15 min provisioning
+on a warm pool) are called "fast configs". Versions without one trigger a ~78
+min image build on first use - usually not what you want. Always prefer fast
+configs unless you explicitly need a specific version.
+
+.PP
+bcdock artifacts list --region  --fast-only   # browse fast configs in a region
+  bcdock env create                                 # interactive picker (fast configs only)
+
+.PP
+Exit codes:
+  0   ok
+  1   general error
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for env
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock env create --name my-env --version 25.5 --country au --region westus2 --wait
+  bcdock env list -o json
+  bcdock env get my-env
+  bcdock env delete my-env --force
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock(1)\fP, \fBbcdock-env-create(1)\fP, \fBbcdock-env-delete(1)\fP, \fBbcdock-env-download-symbols(1)\fP, \fBbcdock-env-get(1)\fP, \fBbcdock-env-hibernate(1)\fP, \fBbcdock-env-launch-json(1)\fP, \fBbcdock-env-list(1)\fP, \fBbcdock-env-logs(1)\fP, \fBbcdock-env-open(1)\fP, \fBbcdock-env-publish(1)\fP, \fBbcdock-env-resume(1)\fP, \fBbcdock-env-usage(1)\fP, \fBbcdock-env-wait(1)\fP
