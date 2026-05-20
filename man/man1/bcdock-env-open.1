@@ -1,0 +1,62 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-env-open - Open the BC Web Client in a browser
+
+
+.SH SYNOPSIS
+\fBbcdock env open  [flags]\fP
+
+
+.SH DESCRIPTION
+Open the BC Web Client URL for the given environment in the default browser.
+This command is not yet implemented.
+
+.PP
+To get the URL today:
+  bcdock env get my-env -o json | jq -r .webClientUrl
+
+.PP
+Exit codes:
+  1   general error (not yet implemented)
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for open
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock env open my-env
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-env(1)\fP
