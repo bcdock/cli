@@ -1,0 +1,132 @@
+# goreleaser config for the public bcdock CLI.
+#
+# Fires from .github/workflows/release.yml on a v* tag pushed to the public
+# repo. Builds cross-platform binaries, packages them as archives, generates
+# checksums, and publishes a GitHub Release.
+#
+# `bcdockadm` (the private staff binary) is intentionally NOT built here -
+# its source lives in cmd/admin/ + cmd/bcdockadm/ which are stripped by the
+# mirror filter before this file ever reaches the public repo.
+#
+# Validate locally without releasing:
+#   goreleaser check
+#   goreleaser build --snapshot --clean
+# Cut a real release:
+#   git tag v0.1.0 && git push --tags   (in the public repo)
+
+version: 2
+
+project_name: bcdock
+
+before:
+  hooks:
+    - go mod tidy
+    - go mod download
+
+builds:
+  - id: bcdock
+    binary: bcdock
+    main: ./cmd/bcdock/
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ignore:
+      # Windows on arm64 is buildable but ~nobody asks for it; skip until
+      # someone does.
+      - goos: windows
+        goarch: arm64
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X github.com/bcdock/cli/internal/cli.version={{.Version}}
+      - -X github.com/bcdock/cli/internal/cli.commit={{.ShortCommit}}
+
+archives:
+  - id: bcdock
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- .Version }}_
+      {{- if eq .Os "darwin" }}macos
+      {{- else }}{{ .Os }}{{ end }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else }}{{ .Arch }}{{ end }}
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+    files:
+      - README.md
+      - LICENSE
+      - CHANGELOG.md
+      - AGENTS.md
+      - man/man1/*.1
+
+brews:
+  - name: bcdock
+    description: "Official CLI for BCDock - managed Business Central environments on Azure"
+    homepage: "https://bcdock.io"
+    license: "MIT"
+    repository:
+      owner: bcdock
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+    commit_author:
+      name: bcdock-bot
+      email: ghbot@bcdock.io
+    install: |
+      bin.install "bcdock"
+      man1.install Dir["man/man1/*.1"]
+    test: |
+      assert_match version.to_s, shell_output("#{bin}/bcdock version")
+
+checksum:
+  name_template: "checksums.txt"
+  algorithm: sha256
+
+snapshot:
+  version_template: "{{ incpatch .Version }}-next"
+
+changelog:
+  # Source the human-curated CHANGELOG.md rather than auto-generating from
+  # commit messages. The public CHANGELOG is the canonical release-notes
+  # surface; goreleaser just attaches a matching extract per tag.
+  use: github
+  sort: asc
+  filters:
+    exclude:
+      - "^chore:"
+      - "^ci:"
+      - "^test:"
+      - "^docs\\(internal\\):"
+      - "Merge pull request"
+      - "Merge branch"
+
+release:
+  github:
+    owner: bcdock
+    name: cli
+  draft: false
+  prerelease: auto       # v0.x.y treated as prerelease until v1.0.0 ships
+  name_template: "{{ .ProjectName }} v{{ .Version }}"
+  header: |
+    ## bcdock {{ .Tag }}
+
+    > Beta CLI. Surface and JSON shapes may change between releases -
+    > see CHANGELOG.md for what moved.
+
+    Install:
+    ```
+    go install github.com/bcdock/cli/cmd/bcdock@{{ .Tag }}
+    ```
+
+    Or download an archive below and put the `bcdock` binary on PATH.
+  footer: |
+    ---
+    Full changelog: [CHANGELOG.md](https://github.com/bcdock/cli/blob/{{ .Tag }}/CHANGELOG.md)
+    Report issues: support@bcdock.io · Security: see [SECURITY.md](https://github.com/bcdock/cli/blob/{{ .Tag }}/SECURITY.md)

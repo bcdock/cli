@@ -1,0 +1,82 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-usage - Show company-level usage and billing
+
+
+.SH SYNOPSIS
+\fBbcdock usage [flags]\fP
+
+
+.SH DESCRIPTION
+Show usage summary for the active company.
+
+.PP
+Defaults to the last 30 days. Use --from/--to for a custom date range.
+Use --by-environment for a per-environment breakdown.
+
+.PP
+For usage scoped to a single environment, use 'bcdock env usage \&'.
+
+.PP
+Exit codes:
+  0   ok
+  1   general error (no active company)
+  3   auth failure (missing or invalid token)
+  4   rate-limited
+
+
+.SH OPTIONS
+\fB--by-environment\fP[=false]
+	Show per-environment breakdown
+
+.PP
+\fB--from\fP=""
+	Start date (YYYY-MM-DD, default: 30 days ago)
+
+.PP
+\fB-h\fP, \fB--help\fP[=false]
+	help for usage
+
+.PP
+\fB--to\fP=""
+	End date (YYYY-MM-DD, default: today)
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock usage
+  bcdock usage --from 2026-03-01 --to 2026-03-31
+  bcdock usage --by-environment
+  bcdock usage -o csv > usage.csv
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock(1)\fP
