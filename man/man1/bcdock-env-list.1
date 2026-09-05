@@ -1,0 +1,79 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-env-list - List environments
+
+
+.SH SYNOPSIS
+\fBbcdock env list [flags]\fP
+
+
+.SH DESCRIPTION
+List all environments for the active company. Excludes deleted environments.
+
+.PP
+Use --status to filter by environment state (running, creating, hibernated,
+failed, etc.). Use --version to filter by BC version. Use --region to filter
+by Azure region.
+
+.PP
+Exit codes:
+  0   ok
+  3   auth failure (missing or invalid token)
+  4   rate-limited
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for list
+
+.PP
+\fB--region\fP=""
+	Filter by region
+
+.PP
+\fB--status\fP=""
+	Filter by status
+
+.PP
+\fB--version\fP=""
+	Filter by BC version
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock env list
+  bcdock env list -o json
+  bcdock env list --status running
+  bcdock env list --version 25.5 --region australiaeast
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-env(1)\fP
