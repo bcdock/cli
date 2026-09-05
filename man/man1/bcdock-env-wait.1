@@ -1,0 +1,68 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-env-wait - Block until an environment reaches one of the requested states
+
+
+.SH SYNOPSIS
+\fBbcdock env wait  [flags]\fP
+
+
+.SH DESCRIPTION
+Wait for an environment to reach a desired status, polling every 3 seconds.
+
+.PP
+Multiple --status values are OR-ed: the command exits 0 as soon as the env
+reaches any one of them.
+
+.PP
+Exit codes:
+  0   one of --status values reached
+  5   environment not found
+  124 timeout elapsed without reaching any requested state
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for wait
+
+.PP
+\fB--status\fP=[]
+	Status to wait for (repeatable: running, failed, hibernated, deleted, ...)
+
+.PP
+\fB--timeout\fP=30m0s
+	Max time to wait
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock env wait my-env --status running --timeout 30m
+  bcdock env wait my-env --status running --status failed --timeout 30m
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-env(1)\fP

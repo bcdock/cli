@@ -1,0 +1,48 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-completion - Generate the autocompletion script for the specified shell
+
+
+.SH SYNOPSIS
+\fBbcdock completion [flags]\fP
+
+
+.SH DESCRIPTION
+Generate the autocompletion script for bcdock for the specified shell.
+See each sub-command's help for details on how to use the generated script.
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for completion
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH SEE ALSO
+\fBbcdock(1)\fP, \fBbcdock-completion-bash(1)\fP, \fBbcdock-completion-fish(1)\fP, \fBbcdock-completion-powershell(1)\fP, \fBbcdock-completion-zsh(1)\fP

@@ -1,0 +1,72 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-me-delete - Schedule account deletion in 30 days (reversible until then)
+
+
+.SH SYNOPSIS
+\fBbcdock me delete [flags]\fP
+
+
+.SH DESCRIPTION
+Schedule anonymisation of your account in 30 days. Within that window:
+  - your running envs are hibernated to stop active-rate billing
+  - companies you sole-own are flagged for anonymisation
+  - companies you co-own transfer ownership to the oldest co-member
+  - you can sign back in any time to cancel ('me cancel-deletion' or just re-signin)
+
+.PP
+Confirm by passing --confirm with your account email. The CLI never deletes
+based on prompts; --confirm is mandatory for unattended / agent use.
+
+.PP
+Exit codes:
+  0   ok
+  1   general error (wrong --confirm email)
+  3   auth failure (missing or invalid token)
+
+
+.SH OPTIONS
+\fB--confirm\fP=""
+	Must equal your account email (required)
+
+.PP
+\fB-h\fP, \fB--help\fP[=false]
+	help for delete
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock me delete --confirm you@example.com
+  bcdock me delete --confirm you@example.com -o json
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-me(1)\fP

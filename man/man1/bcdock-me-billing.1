@@ -1,0 +1,69 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-me-billing - View your subscription, payment method, and invoice history
+
+
+.SH SYNOPSIS
+\fBbcdock me billing [flags]\fP
+
+
+.SH DESCRIPTION
+Subscription state, last 12 invoices, and a one-click handoff to the
+Stripe-hosted Customer Portal where you manage your card and plan.
+
+.PP
+bcdock me billing show     → mirror snapshot (plan + subscription + invoices)
+  bcdock me billing portal   → URL for the Stripe Customer Portal session
+  bcdock me billing checkout → start a Stripe Checkout flow to add a card
+
+.PP
+Auth: requires a JWT or API key bound to your account.
+
+.PP
+Exit codes:
+  0   ok
+  1   general error
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for billing
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock me billing show
+  bcdock me billing portal
+  bcdock me billing checkout --tier starter --currency usd
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-me(1)\fP, \fBbcdock-me-billing-checkout(1)\fP, \fBbcdock-me-billing-portal(1)\fP, \fBbcdock-me-billing-show(1)\fP
