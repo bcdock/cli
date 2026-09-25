@@ -1,0 +1,60 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-me-cancel-deletion - Cancel a pending deletion (idempotent \- no-op if nothing pending)
+
+
+.SH SYNOPSIS
+\fBbcdock me cancel-deletion [flags]\fP
+
+
+.SH DESCRIPTION
+Reverse a pending account deletion. Returns cancelled=true if there was
+a pending request, cancelled=false otherwise - safe to call unconditionally.
+
+.PP
+Exit codes:
+  0   ok
+  3   auth failure (missing or invalid token)
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for cancel-deletion
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock me cancel-deletion
+  bcdock me cancel-deletion -o json
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-me(1)\fP

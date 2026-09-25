@@ -1,0 +1,109 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-auth-join-waitlist - Submit a waitlist entry to request access to BCDock
+
+
+.SH SYNOPSIS
+\fBbcdock auth join-waitlist [flags]\fP
+
+
+.SH DESCRIPTION
+Join the BCDock waitlist with optional default environment configuration.
+
+.PP
+BCDock is currently in early access - we onboard users carefully so we can
+get the experience right. After you submit, an admin reviews your entry and
+emails you an invite code (typically within 48 hours). Once you have the
+code, run:
+
+.PP
+bcdock auth signup --invite-code CODE --email you@example.com
+
+.PP
+Order of prompts (skip any with --flag or by pressing enter on optional ones):
+  1. Default BC config - version, country, artifact type, region (all optional)
+  2. What you'd like BCDock to help you with (optional)
+  3. Your name (required)
+  4. Your email (required)
+
+.PP
+Exit codes:
+  0   ok
+  1   general error
+  4   rate-limited
+
+
+.SH OPTIONS
+\fB--artifact-type\fP=""
+	Default artifact type: Sandbox or OnPrem
+
+.PP
+\fB--bc-version\fP=""
+	Default BC version (optional)
+
+.PP
+\fB--country\fP=""
+	Default BC country code (optional)
+
+.PP
+\fB--email\fP=""
+	Email address (skips prompt)
+
+.PP
+\fB--expectations\fP=""
+	What you'd like BCDock to help you with (optional)
+
+.PP
+\fB-h\fP, \fB--help\fP[=false]
+	help for join-waitlist
+
+.PP
+\fB--multi-tenant\fP=""
+	true|false - preferred multi-tenant default
+
+.PP
+\fB--name\fP=""
+	Your name (skips prompt)
+
+.PP
+\fB--region\fP=""
+	Preferred Azure region (optional)
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock auth join-waitlist
+  bcdock auth join-waitlist --name "Jane Smith" --email jane@example.com
+  bcdock auth join-waitlist --name "Jane Smith" --email jane@example.com --bc-version 25.5 --country au --region australiaeast
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-auth(1)\fP
