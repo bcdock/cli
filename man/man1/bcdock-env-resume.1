@@ -1,0 +1,81 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-env-resume - Resume a hibernated environment
+
+
+.SH SYNOPSIS
+\fBbcdock env resume  [flags]\fP
+
+
+.SH DESCRIPTION
+Restore a hibernated environment from blob storage. The environment
+transitions from 'hibernated' back to 'running'.
+
+.PP
+Use --version to upgrade the BC platform version during resume (optional - the
+version must be compatible with the saved state). Use --wait to block until
+running or failed instead of returning immediately.
+
+.PP
+Exit codes:
+  0   ok
+  3   auth failure (missing or invalid token)
+  4   rate-limited
+  5   environment not found
+  10  resume failed (provisioning error)
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for resume
+
+.PP
+\fB--version\fP=""
+	Confirm upgrade to this BC version (required when upgrading)
+
+.PP
+\fB--wait\fP[=false]
+	Block until running or failed
+
+.PP
+\fB--wait-timeout\fP=0s
+	Max time to wait (default: 30m)
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock env resume my-env
+  bcdock env resume my-env --wait
+  bcdock env resume my-env --version 25.5 --wait
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-env(1)\fP

@@ -1,0 +1,84 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-auth - Authenticate with the BCDock platform
+
+
+.SH SYNOPSIS
+\fBbcdock auth [flags]\fP
+
+
+.SH DESCRIPTION
+Manage authentication credentials.
+
+.PP
+BCDock access is currently invitation-only. New users follow this path:
+.IP "  1." 5
+bcdock auth join-waitlist                                    (request access)
+.IP "  2." 5
+Wait for your invite (reviewed within 48 hours)
+.IP "  3." 5
+bcdock auth signup --invite-code CODE --email you@example.com (activate account)
+.IP "  4." 5
+bcdock auth login --email you@example.com                    (OTP login)
+
+.PP
+Returning users:
+  bcdock auth login --email you@example.com
+
+.PP
+For CI/CD or agent use, store an API key directly:
+  bcdock auth set-token 
+
+.PP
+See 'bcdock help authentication' for detailed token-source precedence and
+CI/CD best practices.
+
+.PP
+Exit codes:
+  0   ok
+  1   general error
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for auth
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock auth login --email you@example.com
+  bcdock auth whoami
+  bcdock auth set-token bdk_xxxxxxxxxxxxxxxxxxxx
+  bcdock auth logout
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock(1)\fP, \fBbcdock-auth-join-waitlist(1)\fP, \fBbcdock-auth-login(1)\fP, \fBbcdock-auth-logout(1)\fP, \fBbcdock-auth-set-token(1)\fP, \fBbcdock-auth-signup(1)\fP, \fBbcdock-auth-whoami(1)\fP

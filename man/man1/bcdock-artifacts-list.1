@@ -1,0 +1,92 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-artifacts-list - List BC versions available in a region
+
+
+.SH SYNOPSIS
+\fBbcdock artifacts list [flags]\fP
+
+
+.SH DESCRIPTION
+List BC artifact versions available in the given Azure region.
+
+.PP
+FAST=yes rows have a pre-built VM image, which means provisioning takes 7-15
+minutes on a warm pool instead of ~78 minutes for an image build. Always prefer
+fast configs unless you explicitly need a specific version.
+
+.PP
+Use --country to narrow to one localisation. Use --type to filter to Sandbox
+or OnPrem artifacts. Use --fast-only to show only rows with a pre-built image.
+
+.PP
+Exit codes:
+  0   ok
+  1   general error (e.g. invalid --type value)
+  3   auth failure (missing or invalid token)
+  4   rate-limited
+
+
+.SH OPTIONS
+\fB--country\fP=""
+	Filter by country code (e.g. au)
+
+.PP
+\fB--fast-only\fP[=false]
+	Only versions with pre-built images (~7-15 min on a warm pool)
+
+.PP
+\fB-h\fP, \fB--help\fP[=false]
+	help for list
+
+.PP
+\fB--include-preview\fP[=false]
+	Include insider/preview builds
+
+.PP
+\fB--region\fP=""
+	Azure region (required, e.g. australiaeast)
+
+.PP
+\fB--type\fP=""
+	Filter by artifact type: sandbox or onprem
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock artifacts list --region australiaeast
+  bcdock artifacts list --region australiaeast --fast-only
+  bcdock artifacts list --region australiaeast --country au --type sandbox
+  bcdock artifacts list --region westus2 --fast-only -o json
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-artifacts(1)\fP

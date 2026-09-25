@@ -1,0 +1,117 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-auth-signup - Activate your BCDock account using an invite code
+
+
+.SH SYNOPSIS
+\fBbcdock auth signup [flags]\fP
+
+
+.SH DESCRIPTION
+Activate your account after receiving an invite code via email.
+
+.PP
+If you don't have an invite code yet, join the waitlist first:
+  bcdock auth join-waitlist
+
+.PP
+Once you have a code, run:
+  bcdock auth signup --invite-code ABCD1234 --email you@example.com
+
+.PP
+The CLI looks up your waitlist entry via the invite code and pre-fills any
+BC config you supplied at waitlist time. After activation, run:
+  bcdock auth login --email you@example.com
+
+.PP
+to receive an OTP and complete login. The first BC environment is queued
+automatically when activation succeeds (if a complete config is available).
+
+.PP
+Exit codes:
+  0   ok
+  1   general error (invalid invite code, email mismatch)
+  4   rate-limited
+
+
+.SH OPTIONS
+\fB--accept-eula\fP[=false]
+	Accept the Microsoft NAV/BC on Docker EULA
+
+.PP
+\fB--accept-insider-eula\fP[=false]
+	Accept the BC Insider EULA (preview versions)
+
+.PP
+\fB--artifact-type\fP=""
+	Artifact type: Sandbox or OnPrem
+
+.PP
+\fB--bc-version\fP=""
+	BC version (e.g. 27.5)
+
+.PP
+\fB--country\fP=""
+	BC country code (e.g. AU)
+
+.PP
+\fB--email\fP=""
+	Email address (the one your invite was issued for)
+
+.PP
+\fB-h\fP, \fB--help\fP[=false]
+	help for signup
+
+.PP
+\fB--invite-code\fP=""
+	Invite code from your waitlist invite email
+
+.PP
+\fB--multi-tenant\fP=""
+	true|false - multi-tenant container
+
+.PP
+\fB--name\fP=""
+	Display name (defaults to waitlist entry name if any)
+
+.PP
+\fB--region\fP=""
+	Azure region (e.g. australiaeast)
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock auth signup --invite-code ABCD1234 --email you@example.com
+  bcdock auth signup --invite-code ABCD1234 --email you@example.com --bc-version 25.5 --country au
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-auth(1)\fP
