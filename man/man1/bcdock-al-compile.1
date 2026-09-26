@@ -1,0 +1,98 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-al-compile - Compile an AL project using the env-matched alc
+
+
+.SH SYNOPSIS
+\fBbcdock al compile [flags]\fP
+
+
+.SH DESCRIPTION
+Download the env's bundled AL Language extension (cached), extract the
+matching alc binary, and run it against the AL project.
+
+.PP
+Caching: the vsix is keyed by the env's platformVersion (falling back to
+bcVersion when null) and stored under ${BCDOCK_AL_CACHE:-$XDG_CACHE_HOME/bcdock/al-vsix}.
+Re-use across envs on the same BC platform is automatic. Use --refresh to
+force re-download.
+
+.PP
+Args after a literal '--' are forwarded verbatim to alc, so anything alc
+supports (e.g. /generatecode, /analyzer, /ruleset) goes through unmodified.
+
+.PP
+Exit codes:
+  0   ok
+  1   general error (compile failed, download failed, env not running)
+  3   auth failure (missing or invalid token)
+  5   environment not found
+
+
+.SH OPTIONS
+\fB--env\fP=""
+	Env whose BC platform's alc to use (required)
+
+.PP
+\fB-h\fP, \fB--help\fP[=false]
+	help for compile
+
+.PP
+\fB--insecure\fP[=false]
+	Skip TLS verification for the downloads endpoint (self-signed certs)
+
+.PP
+\fB--out\fP=""
+	Output .app file passed as /out: (alc derives the default from app.json if empty)
+
+.PP
+\fB--package-cache\fP=".alpackages"
+	Symbol cache directory passed as /packagecachepath:
+
+.PP
+\fB--project\fP="."
+	AL project directory passed to alc as /project:
+
+.PP
+\fB--refresh\fP[=false]
+	Re-download the vsix even if the cached copy exists
+
+.PP
+\fB--timeout\fP=5m0s
+	vsix download timeout
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock al compile --env my-env
+  bcdock al compile --env my-env --out build/MyApp_1.0.0.0.app
+  bcdock al compile --env my-env --refresh
+  bcdock al compile --env my-env -- /generatecode+ /errorlog:build/diag.log
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-al(1)\fP
