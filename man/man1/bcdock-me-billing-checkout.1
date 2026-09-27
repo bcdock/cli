@@ -1,0 +1,84 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-me-billing-checkout - Start a Stripe Checkout flow for a chosen tier+currency (prints the hosted URL)
+
+
+.SH SYNOPSIS
+\fBbcdock me billing checkout [flags]\fP
+
+
+.SH DESCRIPTION
+Creates a Stripe Checkout Session and prints the URL to open in a browser.
+Stripe handles card collection, 3DS, Apple/Google Pay, then redirects back to the
+portal /billing page. BCDock mirrors the new subscription server-side within
+seconds of the customer completing the flow.
+
+.PP
+This is the only path for trial users to add a card and convert to a paid tier.
+After conversion, use 'bcdock me billing portal' for ongoing card / plan management.
+
+.PP
+Exit codes:
+  0   ok
+  1   general error (invalid tier or currency)
+  3   auth failure (missing or invalid token)
+  4   rate-limited
+
+
+.SH OPTIONS
+\fB--cancel-url\fP=""
+	URL Stripe redirects to if the user cancels (optional)
+
+.PP
+\fB--currency\fP=""
+	Currency: aud|usd (required)
+
+.PP
+\fB-h\fP, \fB--help\fP[=false]
+	help for checkout
+
+.PP
+\fB--success-url\fP=""
+	URL Stripe redirects to after a successful payment (optional)
+
+.PP
+\fB--tier\fP=""
+	Tier to subscribe to: payg|starter|pro|business|enterprise (required)
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock me billing checkout --tier starter --currency aud
+  bcdock me billing checkout --tier pro --currency usd
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-me-billing(1)\fP

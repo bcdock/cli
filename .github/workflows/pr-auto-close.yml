@@ -1,0 +1,54 @@
+name: Auto-close PRs
+
+# `github.com/bcdock/cli` is a read-only broadcast mirror of an upstream
+# private monorepo - it is not a community surface. GitHub does not let
+# repos disable PRs at the settings level, so this workflow closes any
+# incoming PR with a redirect comment pointing at the canonical support
+# and contribution channels.
+#
+# This file ships in the mirror payload (see services/bcdock-cli/.github/
+# in the upstream monorepo). It is inert in the upstream because GitHub
+# only reads workflows from repo-root .github/. After the mirror filter
+# promotes services/bcdock-cli/ to root, this workflow activates here.
+
+on:
+  pull_request_target:
+    types: [opened, reopened]
+
+permissions:
+  pull-requests: write
+  issues: write
+
+jobs:
+  close:
+    name: close-with-redirect
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Close PR and post redirect comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = [
+              "Thanks for opening this PR! Heads up: **`bcdock/cli` is a read-only mirror** of an upstream private repository. We do not accept pull requests here.",
+              "",
+              "If you'd like to:",
+              "",
+              "- **Report a bug or request a feature**: email **support@bcdock.io** with the details, or use the issue form on https://bcdock.io.",
+              "- **Report a security issue**: please follow the disclosure process in [`SECURITY.md`](../blob/main/SECURITY.md) - do **not** post details in a public PR or issue.",
+              "- **Suggest a change**: describe the change in an email to support@bcdock.io. We review every message.",
+              "",
+              "See [`CONTRIBUTING.md`](../blob/main/CONTRIBUTING.md) for the full policy. Closing this PR.",
+            ].join("\n");
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body,
+            });
+            await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              state: "closed",
+            });

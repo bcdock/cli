@@ -1,0 +1,96 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-env-publish - Publish (deploy) an AL .app to a BC environment
+
+
+.SH SYNOPSIS
+\fBbcdock env publish   [flags]\fP
+
+
+.SH DESCRIPTION
+Upload a compiled .app file to the BC dev service endpoint and run install
+or upgrade codeunits server-side. Equivalent to VS Code's "AL: Publish without
+debugging" - same wire protocol, no IDE required.
+
+.PP
+Wire protocol (full spec in the al-cli skill):
+  POST {devEndpointUrl}apps?SchemaUpdateMode=…[&tenant=…][&DependencyPublishingOption=…]
+  Authorization: Basic base64(user:password)   # from env credentials
+  Content-Type: multipart/form-data; one file part = .app bytes
+
+.PP
+Schema update modes:
+  synchronize  (default) - additive schema changes; preserves data
+  forcesync              - recreate columns when types changed; data loss possible
+  recreate               - drop and recreate tables; ALL data lost - use with care
+
+.PP
+The call is synchronous: returns only after install/upgrade codeunits finish.
+Set --timeout high for large apps (default 10m).
+
+.PP
+Exit codes:
+  0   ok
+  1   general error (publish failed, env not running, no dev endpoint)
+  3   auth failure (missing or invalid token)
+  5   environment not found
+
+
+.SH OPTIONS
+\fB--dependency-publishing\fP=""
+	Dependency handling: Default | Ignore | Strict (omitted = server default)
+
+.PP
+\fB-h\fP, \fB--help\fP[=false]
+	help for publish
+
+.PP
+\fB--insecure\fP[=false]
+	Skip TLS verification for the dev endpoint (use for self-signed local certs only)
+
+.PP
+\fB--schema-update-mode\fP="synchronize"
+	Schema update mode: synchronize | forcesync | recreate (recreate drops data)
+
+.PP
+\fB--tenant\fP="default"
+	BC tenant to publish into
+
+.PP
+\fB--timeout\fP=10m0s
+	Max time to wait for the publish call (install/upgrade codeunits run synchronously)
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock env publish my-env build/MyApp_1.0.0.0.app
+  bcdock env publish my-env app.app --schema-update-mode forcesync
+  bcdock env publish my-env app.app --tenant default --timeout 20m
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-env(1)\fP

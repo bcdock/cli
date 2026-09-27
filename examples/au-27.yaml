@@ -1,0 +1,17 @@
+# A minimal BCDock environment recipe.
+#
+#   bcdock env create --manifest examples/au-27.yaml
+#
+# Relative file: paths resolve against THIS file's directory, not your working
+# directory, so the recipe works from anywhere in the repo.
+
+schema: bcdock-env/v1
+
+bcVersion: 27.1.41600.0
+country: au
+artifactType: Sandbox
+
+# Apps publish in the order listed. v1 does not resolve AL dependencies, so list
+# them in dependency order yourself.
+apps:
+  - file: ./apps/HelloWorld.app

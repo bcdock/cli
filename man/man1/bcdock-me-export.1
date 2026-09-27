@@ -1,0 +1,83 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-me-export - Request a ZIP of all data we hold for your account and company
+
+
+.SH SYNOPSIS
+\fBbcdock me export [flags]\fP
+
+
+.SH DESCRIPTION
+Request a GDPR-style data export. The platform builds a ZIP of CSVs
+covering your environments, usage history, audit log, billing history, email
+log, etc., uploads it to encrypted blob storage, and emails you a 24-hour
+SAS download link.
+
+.PP
+Idempotent: if a request is already pending or processing, the existing one is
+returned instead of creating a duplicate.
+
+.PP
+Exit codes:
+  0   ok
+  1   general error
+  3   auth failure (missing or invalid token)
+  4   rate-limited
+  124 timeout (--wait only: export not ready within --wait-timeout)
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for export
+
+.PP
+\fB--out\fP=""
+	When --wait succeeds, download the ZIP to this path
+
+.PP
+\fB--wait\fP[=false]
+	Poll until status flips to ready/failed/expired
+
+.PP
+\fB--wait-timeout\fP=5m0s
+	Maximum time to poll when --wait is set (exit 124 if exceeded)
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock me export
+  bcdock me export --wait
+  bcdock me export --wait --out export.zip
+  bcdock me export -o json
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-me(1)\fP
