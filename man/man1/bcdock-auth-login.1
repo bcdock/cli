@@ -1,0 +1,94 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-auth-login - Log in via email OTP (returning users; account must already exist)
+
+
+.SH SYNOPSIS
+\fBbcdock auth login [flags]\fP
+
+
+.SH DESCRIPTION
+Authenticate using the email one-time password flow.
+
+.PP
+Use this for returning users. Login does NOT create new accounts - brand-new
+emails get an explicit error pointing at 'bcdock auth signup'. New users:
+.IP "  1." 5
+bcdock auth join-waitlist
+.IP "  2." 5
+(wait for invite email)
+.IP "  3." 5
+bcdock auth signup --invite-code CODE --email you@example.com
+.IP "  4." 5
+bcdock auth login --email you@example.com
+
+.PP
+You will be prompted for your email address, then a 6-digit code sent
+to that address. A long-lived API key (bdk_...) is minted and stored in
+~/.bcdock/credentials.json - no silent expiry.
+
+.PP
+For non-interactive use (CI, smoke tests, agents): pass --email and --otp
+together to skip both prompts. The OTP must already be known to the
+caller (Development mode accepts "000000" - see local-e2e.sh notes).
+
+.PP
+For CI/CD and agent use, prefer API keys: bcdock auth set-token 
+
+.PP
+Exit codes:
+  0   ok
+  1   general error (wrong email, wrong code, email not registered)
+  3   auth failure
+  4   rate-limited
+
+
+.SH OPTIONS
+\fB--email\fP=""
+	Email address (skips prompt)
+
+.PP
+\fB-h\fP, \fB--help\fP[=false]
+	help for login
+
+.PP
+\fB--otp\fP=""
+	Pre-known OTP code - skips the interactive Code: prompt. Requires --email. Intended for smoke tests and agent flows; humans should leave this unset.
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock auth login --email you@example.com
+  bcdock auth login --email you@example.com --otp 123456
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-auth(1)\fP

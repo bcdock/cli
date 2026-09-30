@@ -1,0 +1,80 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-env-delete - Delete an environment
+
+
+.SH SYNOPSIS
+\fBbcdock env delete  [flags]\fP
+
+
+.SH DESCRIPTION
+Delete an environment and free its pool slot. Prompts for confirmation
+unless --force is passed.
+
+.PP
+Use --wait to block until the deletion is fully complete. With --wait, the
+command polls until the status is 'deleted'; without --wait, deletion is
+started asynchronously.
+
+.PP
+Exit codes:
+  0   ok
+  3   auth failure (missing or invalid token)
+  4   rate-limited
+  5   environment not found
+
+
+.SH OPTIONS
+\fB--force\fP[=false]
+	Skip confirmation prompt
+
+.PP
+\fB-h\fP, \fB--help\fP[=false]
+	help for delete
+
+.PP
+\fB--wait\fP[=false]
+	Block until fully cleaned up
+
+.PP
+\fB--wait-timeout\fP=0s
+	Max time to wait (default: 5m)
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock env delete my-env
+  bcdock env delete my-env --force
+  bcdock env delete my-env --force --wait
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-env(1)\fP

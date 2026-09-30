@@ -1,0 +1,65 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-artifacts - Discover BC artifact versions and countries
+
+
+.SH SYNOPSIS
+\fBbcdock artifacts [flags]\fP
+
+
+.SH DESCRIPTION
+Browse the BC artifact catalog for available versions.
+
+.PP
+Use this before 'env create' to find valid version and country combinations.
+FAST=yes means a pre-built image is ready (~7-15 min on a warm pool vs ~78 min
+first-time image build).
+
+.PP
+Exit codes:
+  0   ok
+  1   general error
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for artifacts
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock artifacts list --region australiaeast --fast-only
+  bcdock artifacts list --region australiaeast --country au
+  bcdock artifacts countries
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock(1)\fP, \fBbcdock-artifacts-countries(1)\fP, \fBbcdock-artifacts-list(1)\fP
