@@ -1,0 +1,67 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-auth-set-token - Store an API token persistently
+
+
+.SH SYNOPSIS
+\fBbcdock auth set-token  [flags]\fP
+
+
+.SH DESCRIPTION
+Store an API key in ~/.bcdock/credentials.json for all future commands.
+
+.PP
+Generate API keys at: https://app.bcdock.io/profile/api-keys
+
+.PP
+The token is used in order of precedence:
+  1. --token flag
+  2. BCDOCK_TOKEN environment variable  (env: BCDOCK_TOKEN)
+  3. ~/.bcdock/credentials.json (set by this command)
+
+.PP
+Exit codes:
+  0   ok
+  1   general error (cannot write credentials file)
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for set-token
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock auth set-token bdk_xxxxxxxxxxxxxxxxxxxx
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-auth(1)\fP
