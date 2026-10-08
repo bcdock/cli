@@ -1,0 +1,95 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-artifacts-request - Request a BC version that has no ready image yet
+
+
+.SH SYNOPSIS
+\fBbcdock artifacts request  [flags]\fP
+
+
+.SH DESCRIPTION
+Ask BCDock to build a BC version that has no pre-built image, so that
+environments can be created on it. This is the same request as the portal's
+"Request this version" button.
+
+.PP
+Use the full version (versionFull from 'bcdock artifacts list'). When
+\&'bcdock env create' refuses a version because it has no ready image, its error
+prints this command with the version filled in.
+
+.PP
+What happens next: BCDock replies by email, usually within the time this
+command prints. Once the image is built, 'bcdock artifacts list --fast-only'
+shows the version and 'bcdock env create' accepts it.
+
+.PP
+Needs the env:write scope (keys from 'bcdock auth login' have it).
+
+.PP
+Exit codes:
+  0   ok, request submitted
+  1   general error (for example, the version is not in the catalog for that
+      country and type, or version requests are not open on this platform)
+  3   auth failure (missing or invalid token)
+  4   rate-limited
+
+
+.SH OPTIONS
+\fB--country\fP=""
+	Country localisation (required, e.g. au, us, gb)
+
+.PP
+\fB-h\fP, \fB--help\fP[=false]
+	help for request
+
+.PP
+\fB--message\fP=""
+	Optional note for the BCDock team (up to 2000 characters)
+
+.PP
+\fB--multi-tenant\fP[=true]
+	Multi-tenant (the default for 'env create')
+
+.PP
+\fB--type\fP="sandbox"
+	Artifact type: sandbox or onprem
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock artifacts list --region australiaeast --country au   # find the versionFull
+  bcdock artifacts request <version> --country au
+  bcdock artifacts request <version> --country us --type onprem --message "Needed for a client demo"
+  bcdock artifacts request <version> --country au -o json
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-artifacts(1)\fP

@@ -1,0 +1,72 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-auth-keys-revoke - Revoke one of your company's API keys
+
+
+.SH SYNOPSIS
+\fBbcdock auth keys revoke  [flags]\fP
+
+
+.SH DESCRIPTION
+Revoke an API key by its id (from 'bcdock auth keys list'). The key stops
+working immediately for new requests. Revoking cannot be undone.
+
+.PP
+Prompts for confirmation unless --yes is passed. When stdin is not a terminal
+(scripts, agents), --yes is required.
+
+.PP
+Exit codes:
+  0   ok, or cancelled at the prompt
+  1   general error (for example, no --yes without a terminal)
+  3   auth failure (missing or invalid token)
+  4   rate-limited
+  5   no key with that id in your active company
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for revoke
+
+.PP
+\fB--yes\fP[=false]
+	Revoke without a confirmation prompt
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock auth keys list
+  bcdock auth keys revoke <id>
+  bcdock auth keys revoke <id> --yes -o json
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-auth-keys(1)\fP

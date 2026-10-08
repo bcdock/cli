@@ -1,0 +1,63 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-auth-logout - Clear stored credentials
+
+
+.SH SYNOPSIS
+\fBbcdock auth logout [flags]\fP
+
+
+.SH DESCRIPTION
+Invalidate the current session server-side and clear the token from
+~/.bcdock/credentials.json. Safe to run even if not authenticated.
+
+.PP
+Does not revoke API keys created via the portal; use the portal API-keys page
+to revoke long-lived keys.
+
+.PP
+Exit codes:
+  0   ok
+  1   general error (cannot clear credentials file)
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for logout
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock auth logout
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-auth(1)\fP
