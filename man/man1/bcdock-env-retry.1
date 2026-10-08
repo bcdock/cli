@@ -1,0 +1,80 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-env-retry - Retry provisioning an environment that failed
+
+
+.SH SYNOPSIS
+\fBbcdock env retry  [flags]\fP
+
+
+.SH DESCRIPTION
+Retry provisioning an environment in the 'error' status, the same as the
+portal's Retry button. Only a failed environment can be retried; for any other
+status the API refuses and nothing changes.
+
+.PP
+Use --wait to block until the environment is running or has failed again.
+
+.PP
+Needs the env:write scope (keys from 'bcdock auth login' have it).
+
+.PP
+Exit codes:
+  0   ok
+  1   general error, including the environment not being in 'error', provisioning
+      failing again (its error message is printed), or a --wait timeout
+  3   auth failure (missing or invalid token)
+  4   rate-limited
+  5   environment not found
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for retry
+
+.PP
+\fB--wait\fP[=false]
+	Block until running or failed
+
+.PP
+\fB--wait-timeout\fP=0s
+	Max time to wait (default: 30m)
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock env retry my-env
+  bcdock env retry my-env --wait
+  bcdock env retry my-env --wait -o json
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-env(1)\fP

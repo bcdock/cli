@@ -1,0 +1,65 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-companies-switch - Switch active company context
+
+
+.SH SYNOPSIS
+\fBbcdock companies switch  [flags]\fP
+
+
+.SH DESCRIPTION
+Switch to a different company. All subsequent commands run against the new company.
+
+.PP
+New tokens are stored in ~/.bcdock/credentials.json. Pass the company name,
+slug, or GUID - the CLI resolves all three.
+
+.PP
+Exit codes:
+  0   ok
+  3   auth failure (missing or invalid token)
+  4   rate-limited
+  5   company not found
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for switch
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock companies switch contoso
+  bcdock companies switch 3072f5a0-0000-0000-0000-000000000000
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-companies(1)\fP
