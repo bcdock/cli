@@ -1,0 +1,70 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-me-billing-portal - Print the Stripe Customer Portal URL for managing card / plan / invoices
+
+
+.SH SYNOPSIS
+\fBbcdock me billing portal [flags]\fP
+
+
+.SH DESCRIPTION
+Creates a short-lived Stripe Customer Portal session and returns the URL.
+Open it in a browser to update payment method, change plan, or cancel.
+
+.PP
+Returns 400 if your account has no Stripe Customer yet (still on free trial -
+use 'bcdock me billing checkout' to add a card and pick a tier first).
+
+.PP
+Exit codes:
+  0   ok
+  1   general error (no Stripe customer yet)
+  3   auth failure (missing or invalid token)
+  4   rate-limited
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for portal
+
+.PP
+\fB--return-url\fP=""
+	URL Stripe redirects back to after the user closes the portal
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock me billing portal
+  bcdock me billing portal -o json
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-me-billing(1)\fP

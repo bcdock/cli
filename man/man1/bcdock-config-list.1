@@ -1,0 +1,65 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-config-list - List all available configurations (versions, countries, regions)
+
+
+.SH SYNOPSIS
+\fBbcdock config list [flags]\fP
+
+
+.SH DESCRIPTION
+List all available BC configurations - versions, countries, and regions -
+in one call. This command is not yet implemented.
+
+.PP
+Use these commands today:
+  bcdock config regions              - Azure regions
+  bcdock artifacts list --region  - BC versions + countries in a region
+  bcdock artifacts countries         - country codes
+
+.PP
+Exit codes:
+  1   general error (not yet implemented)
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for list
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock config regions
+  bcdock artifacts list --region australiaeast --fast-only
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-config(1)\fP
