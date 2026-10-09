@@ -1,0 +1,75 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-companies-set-location - Set the active company's default country and region for new environments
+
+
+.SH SYNOPSIS
+\fBbcdock companies set-location  [flags]\fP
+
+
+.SH DESCRIPTION
+Set the active company's default location: a country, and optionally the Azure
+region within it. New environments default to it; existing environments do not move.
+
+.PP
+Without --region the country's default region is used. --region must be one of the
+country's regions (see 'bcdock config regions'). Owners and admins only.
+
+.PP
+Auth: any API key scope; your role in the company must be owner or admin.
+
+.PP
+Exit codes:
+  0   ok
+  1   general error (unknown country code, or a region outside that country)
+  3   auth failure (missing or invalid token, or not an owner/admin)
+  4   rate-limited
+  5   company not found
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for set-location
+
+.PP
+\fB--region\fP=""
+	Azure region within the country (default: the country's default region)
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock companies set-location AU
+  bcdock companies set-location US --region centralus
+  bcdock companies set-location AU -o json
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-companies(1)\fP

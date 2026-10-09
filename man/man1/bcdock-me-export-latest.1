@@ -1,0 +1,71 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-me-export-latest - Show your most recent data export, and download it if it is ready
+
+
+.SH SYNOPSIS
+\fBbcdock me export latest [flags]\fP
+
+
+.SH DESCRIPTION
+Show your most recent data export in any state (pending, ready, failed or
+expired), with its download link when ready. With --out, download it, without
+starting a new export the way 'bcdock me export' does.
+
+.PP
+Auth: any API key scope; it reads only your own export.
+
+.PP
+Exit codes:
+  0   ok (including "no export yet")
+  1   general error (--out on an export that is not ready)
+  3   auth failure (missing or invalid token)
+  4   rate-limited
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for latest
+
+.PP
+\fB--out\fP=""
+	Download the latest export to this path (it must be ready)
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock me export latest
+  bcdock me export latest --out export.zip
+  bcdock me export latest -o json
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-me-export(1)\fP
