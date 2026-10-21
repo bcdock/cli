@@ -1,0 +1,64 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-auth-keys - List and revoke your company's API keys
+
+
+.SH SYNOPSIS
+\fBbcdock auth keys [flags]\fP
+
+
+.SH DESCRIPTION
+List and revoke the API keys of your active company.
+
+.PP
+Keys are created in the portal (Profile -> API keys), or by 'bcdock auth login'.
+A key cannot create keys, but any key of the company can list and revoke them,
+so a leaked key can be revoked from the CLI.
+
+.PP
+Exit codes:
+  0   ok
+  1   general error
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for keys
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock auth keys list
+  bcdock auth keys revoke <id>
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-auth(1)\fP, \fBbcdock-auth-keys-list(1)\fP, \fBbcdock-auth-keys-revoke(1)\fP
