@@ -1,0 +1,102 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-waitlist-join - Submit a waitlist entry non-interactively (CI-friendly)
+
+
+.SH SYNOPSIS
+\fBbcdock waitlist join [flags]\fP
+
+
+.SH DESCRIPTION
+Submit a waitlist entry without any prompts.
+
+.PP
+--name and --email are required; everything else is optional. Unlike
+\&'bcdock auth join-waitlist' (interactive), this verb never prompts - it is the
+form the smoke suite and other automation drive.
+
+.PP
+On the dev mirror with BCDOCK_DEV_TURNSTILE_BYPASS set, the submit clears the
+Turnstile gate inline; otherwise it requests the deferred browser-confirm flow
+and prints a confirm URL.
+
+.PP
+Exit codes:
+  0   ok
+  1   general error (missing required flag, validation)
+  4   rate-limited
+
+
+.SH OPTIONS
+\fB--artifact-type\fP=""
+	Default artifact type: Sandbox or OnPrem (optional)
+
+.PP
+\fB--bc-version\fP=""
+	Default BC version (optional)
+
+.PP
+\fB--country\fP=""
+	Default BC country code (optional)
+
+.PP
+\fB--email\fP=""
+	Email address (required)
+
+.PP
+\fB-h\fP, \fB--help\fP[=false]
+	help for join
+
+.PP
+\fB--multi-tenant\fP=""
+	true|false - preferred multi-tenant default (optional)
+
+.PP
+\fB--name\fP=""
+	Your name (required)
+
+.PP
+\fB--region\fP=""
+	Preferred Azure region (optional)
+
+.PP
+\fB--use-case\fP=""
+	What you'd like BCDock to help you with (optional)
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock waitlist join --name "Jane Smith" --email jane@example.com
+  bcdock waitlist join --name CI --email "ci+TOKEN.noemail@example.com"
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-waitlist(1)\fP

@@ -1,0 +1,62 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-auth-keys-list - List your company's API keys (never the secrets)
+
+
+.SH SYNOPSIS
+\fBbcdock auth keys list [flags]\fP
+
+
+.SH DESCRIPTION
+List the active company's API keys: id, name, the key's prefix, scopes, and
+when it was created, last used and expires. The secret is never shown; it is
+displayed once, when the key is created.
+
+.PP
+Exit codes:
+  0   ok
+  3   auth failure (missing or invalid token)
+  4   rate-limited
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for list
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock auth keys list
+  bcdock auth keys list -o json
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-auth-keys(1)\fP

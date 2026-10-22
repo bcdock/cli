@@ -1,0 +1,133 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-env-query - Run a read-only OData query against a BC environment
+
+
+.SH SYNOPSIS
+\fBbcdock env query   [flags]\fP
+
+
+.SH DESCRIPTION
+Read business data out of a BC environment over its OData v4 endpoint.
+
+.PP
+This is the read path for scripts and agents. It replaces the pattern of pulling the
+admin password out of 'bcdock env get' and calling OData with curl, which put a live
+credential into the caller's transcript.
+
+.PP
+Credentials: the CLI fetches the environment's web-service access key once per
+invocation from the audited reveal endpoint (the same one 'bcdock env credentials'
+uses) and sends it as HTTP Basic auth. It is never printed, never accepted as a flag,
+and never reaches your shell history or the process list. BC's OData and SOAP surfaces
+reject the admin password, so the access key is the credential in play here.
+
+.PP
+Read-only by construction: the verb issues GET and nothing else. There is no method
+flag, so a write attempt is refused as an unknown flag before any call. A path that is
+an absolute URL, escapes the OData root, or names $batch is refused for the same reason.
+
+.PP
+The path is relative to the environment's OData root and is taken literally (do not
+pre-percent-encode it). OData v4 serves the entity sets your environment publishes as
+web services, so WHICH NOUNS EXIST VARIES BY ENVIRONMENT. 'Company' is a BC system
+entity set and is present on every environment. Everything else depends on what has
+been published, so ask the environment rather than guessing:
+
+.PP
+Company                                  the company list - start here if you do
+                                           not know the company name. Note the
+                                           capital and the singular
+  $metadata                                every entity set this environment serves.
+                                           This is the answer to "what can I query?"
+  Company('CRONUS AU')/Chart_of_Accounts   a company-scoped set, or pass --company
+  Company('CRONUS AU')                     a single entity by key
+
+.PP
+Measured on a BC 28.4 sandbox: 82 published entity sets, among them
+Chart_of_Accounts, workflowCustomers, G_LEntries and SalesOrder. Names are
+case-sensitive, and a name BC does not serve answers 404 rather than an empty list.
+
+.PP
+Output:
+  -o table  (default) scalar columns; any dropped nested column is named on stderr
+  -o json   the 'value' array, pretty-printed
+  -o csv    the same scalar columns as the table
+A response that is not a collection (a single entity, $count) is printed as JSON in
+every format, because there are no rows to lay out.
+
+.PP
+Exit codes:
+  0   ok
+  1   general error (refused path, no OData URL, BC error response)
+  3   auth failure (missing or invalid bcdock token)
+  5   environment not found
+
+
+.SH OPTIONS
+\fB--company\fP=""
+	BC company to scope the query to (wraps the path in Company('...'))
+
+.PP
+\fB--filter\fP=""
+	OData $filter expression
+
+.PP
+\fB-h\fP, \fB--help\fP[=false]
+	help for query
+
+.PP
+\fB--insecure\fP[=false]
+	Skip TLS verification for the OData endpoint (use for self-signed local certs only)
+
+.PP
+\fB--select\fP=""
+	OData $select list (comma-separated field names)
+
+.PP
+\fB--tenant\fP="default"
+	BC tenant to query
+
+.PP
+\fB--timeout\fP=1m0s
+	Max time to wait for the OData response
+
+.PP
+\fB--top\fP=0
+	OData $top row limit (0 = server default)
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock env query my-env Company -o json
+  bcdock env query my-env '$metadata'
+  bcdock env query my-env --company "CRONUS AU" Chart_of_Accounts --select "No,Name" --top 3
+  bcdock env query my-env --company "CRONUS AU" workflowCustomers --filter "startswith(Name,'Adatum')" -o json
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-env(1)\fP

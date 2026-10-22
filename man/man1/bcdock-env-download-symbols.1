@@ -1,0 +1,103 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-env-download-symbols - Download AL symbol packages from a BC environment's dev endpoint
+
+
+.SH SYNOPSIS
+\fBbcdock env download-symbols  [flags]\fP
+
+
+.SH DESCRIPTION
+Fetch the symbol packages an AL project depends on from the connected BC
+environment and write them to .alpackages/. Equivalent to VS Code's
+"AL: Download symbols" - same wire protocol, no IDE required.
+
+.PP
+Reads app.json (default ./app.json) for:
+  - "application" version  → Microsoft\fIApplication\fP\fI\&.app   (System + Base App combined)
+  - "platform" version     → Microsoft\fISystem\fP\fP\&.app        (platform symbols)
+  - "dependencies"         → one .app per entry            (per-tenant or 3rd-party deps)
+
+.PP
+Wire protocol (per Microsoft.Dynamics.Nav.Deployment.dll):
+  GET {devEndpointUrl}dev/packages?publisher=&appName=&versionText=[&tenant=]
+  Authorization: Basic base64(user:password)
+  Accept: application/octet-stream, \fI/\fP
+  → binary .app file in response body
+(devEndpointUrl is {server}/{serverInstance}/ - launch.json-shaped - so we
+append BC's dev-API path "dev/packages" to it.)
+
+.PP
+By default, packages already present in --out-dir are skipped (incremental).
+Use --force to re-download.
+
+.PP
+Exit codes:
+  0   ok
+  1   general error (download failed, env not running, no dev endpoint)
+  3   auth failure (missing or invalid token)
+  5   environment not found
+
+
+.SH OPTIONS
+\fB--app-json\fP="app.json"
+	Path to the app.json driving symbol selection
+
+.PP
+\fB--force\fP[=false]
+	Re-download even if a matching .app already exists in --out-dir
+
+.PP
+\fB-h\fP, \fB--help\fP[=false]
+	help for download-symbols
+
+.PP
+\fB--insecure\fP[=false]
+	Skip TLS verification (use for self-signed local certs only)
+
+.PP
+\fB--out-dir\fP=".alpackages"
+	Directory to write downloaded .app symbol packages into
+
+.PP
+\fB--tenant\fP="default"
+	BC tenant the symbols belong to
+
+.PP
+\fB--timeout\fP=5m0s
+	Per-package download timeout
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock env download-symbols my-env
+  bcdock env download-symbols my-env --app-json apps/MyExt/app.json --out-dir apps/MyExt/.alpackages
+  bcdock env download-symbols my-env --force --tenant default
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-env(1)\fP

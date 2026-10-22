@@ -1,0 +1,30 @@
+{
+  "name": "@bcdock/cli",
+  "version": "0.0.0-replaced-at-publish",
+  "description": "npm wrapper for the bcdock CLI - installs the bcdock binary from GitHub Releases",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bcdock/cli.git"
+  },
+  "bin": {
+    "bcdock": "bin/bcdock"
+  },
+  "files": [
+    "bin/",
+    "install.js",
+    "uninstall.js",
+    "README.md"
+  ],
+  "scripts": {
+    "postinstall": "node install.js",
+    "preuninstall": "node uninstall.js"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.16",
+    "tar": "^7.4.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
