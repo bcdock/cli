@@ -1,0 +1,76 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-auth-set-token - Store an API token persistently
+
+
+.SH SYNOPSIS
+\fBbcdock auth set-token [flags]\fP
+
+
+.SH DESCRIPTION
+Store an API key in ~/.bcdock/credentials.json for all future commands.
+
+.PP
+The key is read from stdin, so it never lands in your shell history or the
+process list: pipe it in, or run the command and paste it when asked. Passing
+the key as an argument still works, with a warning, because the key is then
+saved in your shell history.
+
+.PP
+Generate API keys at: https://app.bcdock.io/profile/api-keys
+
+.PP
+The token is used in order of precedence:
+  1. --token flag
+  2. BCDOCK_TOKEN environment variable  (env: BCDOCK_TOKEN)
+  3. ~/.bcdock/credentials.json (set by this command)
+
+.PP
+Exit codes:
+  0   ok
+  1   general error (no key on stdin, or cannot write credentials file)
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for set-token
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  pbpaste | bcdock auth set-token                 # macOS clipboard
+  Get-Clipboard | bcdock auth set-token           # Windows PowerShell
+  bcdock auth set-token < ~/bcdock-key.txt
+  bcdock auth set-token                           # then paste the key and press Enter
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-auth(1)\fP

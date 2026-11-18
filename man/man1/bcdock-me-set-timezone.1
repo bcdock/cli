@@ -1,0 +1,66 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-me-set-timezone - Set the time zone the portal shows your times in
+
+
+.SH SYNOPSIS
+\fBbcdock me set-timezone  [flags]\fP
+
+
+.SH DESCRIPTION
+Set your display time zone, an IANA id such as Australia/Melbourne or
+America/Chicago (UTC for UTC). The portal shows times in it; the API keeps
+storing UTC. The id is checked before it is sent, so a typo fails here.
+
+.PP
+Auth: any API key scope; it changes only your own preference.
+
+.PP
+Exit codes:
+  0   ok
+  1   general error (not an IANA time zone id)
+  3   auth failure (missing or invalid token)
+  4   rate-limited
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for set-timezone
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock me set-timezone Australia/Melbourne
+  bcdock me set-timezone UTC
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-me(1)\fP

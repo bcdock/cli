@@ -1,0 +1,65 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-auth-whoami - Show the currently authenticated user
+
+
+.SH SYNOPSIS
+\fBbcdock auth whoami [flags]\fP
+
+
+.SH DESCRIPTION
+Print the email, display name, role, and company for the authenticated user.
+
+.PP
+Useful as a quick auth check in scripts and agent flows. Returns a non-zero
+exit code if the token is missing or invalid.
+
+.PP
+Exit codes:
+  0   ok
+  1   general error (not authenticated)
+  3   auth failure (invalid token)
+  4   rate-limited
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for whoami
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock auth whoami
+  bcdock auth whoami -o json
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-auth(1)\fP

@@ -1,0 +1,8 @@
+# Cursor / agent rules for the BCDock CLI
+
+Read AGENTS.md before running any bcdock command. It documents the
+discovery-first rule, the exit-code recovery catalogue, and the
+one-call-per-intent loop for BCDock's hosted Business Central platform.
+
+When in doubt: `bcdock <verb> --help`. Trust the binary over any
+documentation snippet older than today.
