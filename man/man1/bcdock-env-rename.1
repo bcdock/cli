@@ -1,0 +1,71 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-env-rename - Change an environment's display name
+
+
+.SH SYNOPSIS
+\fBbcdock env rename   [flags]\fP
+
+
+.SH DESCRIPTION
+Change the name an environment shows in the portal and in 'env list', the
+same as the portal's Rename. Only the display name changes: the environment's
+own name (its container name, used in its URLs) never changes, so its URLs and
+credentials stay the same.
+
+.PP
+The display name is 1 to 60 characters.
+
+.PP
+Needs the env:write scope (keys from 'bcdock auth login' have it).
+
+.PP
+Exit codes:
+  0   ok
+  1   general error (for example, a name over 60 characters, or a deleted environment)
+  3   auth failure (missing or invalid token)
+  4   rate-limited
+  5   environment not found
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for rename
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock env rename my-env "Credit hold demo"
+  bcdock env rename a1b2c3d4 "UAT - client X" -o json
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-env(1)\fP
