@@ -1,0 +1,65 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-env-usage - Show billing usage for an environment
+
+
+.SH SYNOPSIS
+\fBbcdock env usage  [flags]\fP
+
+
+.SH DESCRIPTION
+Show the billing usage timeline for one environment: total running hours,
+total billed amount, and the per-day segment breakdown.
+
+.PP
+For company-wide usage across all environments, use 'bcdock usage'.
+
+.PP
+Exit codes:
+  0   ok
+  3   auth failure (missing or invalid token)
+  4   rate-limited
+  5   environment not found
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for usage
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock env usage my-env
+  bcdock env usage my-env -o json
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-env(1)\fP

@@ -1,0 +1,64 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-al - Compile AL projects using the alc that matches the target BC env
+
+
+.SH SYNOPSIS
+\fBbcdock al [flags]\fP
+
+
+.SH DESCRIPTION
+Run alc.exe versioned to a specific BC environment, by extracting the
+ALLanguage.vsix that BcContainerHelper bundled with that env's BC platform.
+
+.PP
+The vsix is served anonymously by every BC container on its downloads endpoint
+(env.downloadsUrl/ALLanguage.vsix) - same binary BcContainerHelper unpacks
+during container setup, so it's always version-matched to the env's platform.
+
+.PP
+Exit codes:
+  0   ok
+  1   general error
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for al
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock al compile --env my-env
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock(1)\fP, \fBbcdock-al-compile(1)\fP
