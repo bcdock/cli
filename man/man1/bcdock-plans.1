@@ -1,0 +1,59 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-plans - Browse the subscription plans
+
+
+.SH SYNOPSIS
+\fBbcdock plans [flags]\fP
+
+
+.SH DESCRIPTION
+Browse the plans a company can subscribe to. Switching plan is not a CLI command
+yet: it opens when subscriptions do; until then it is done with BCDock.
+
+.PP
+Exit codes:
+  0   ok
+  1   general error
+
+
+.SH OPTIONS
+\fB-h\fP, \fB--help\fP[=false]
+	help for plans
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock plans list
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock(1)\fP, \fBbcdock-plans-list(1)\fP
