@@ -1,0 +1,82 @@
+.nh
+.TH "BCDOCK" "1" "Jan 2025" "BCDock CLI" "BCDock Manual"
+
+.SH NAME
+bcdock-me-billing-export - Download per-environment usage and cost as CSV
+
+
+.SH SYNOPSIS
+\fBbcdock me billing export [flags]\fP
+
+
+.SH DESCRIPTION
+Download the active company's usage per environment as CSV: one row per
+environment with its hours and cost for the period. The same file as the portal's
+billing export. It streams to stdout, or to --out.
+
+.PP
+--from and --to are dates (YYYY-MM-DD); they default to the last 30 days.
+
+.PP
+Auth: an API key with env:read or billing:write; you must be a member of the company.
+
+.PP
+Exit codes:
+  0   ok
+  1   general error (a date not in YYYY-MM-DD, or a write failure)
+  3   auth failure (missing or invalid token, or a key without env:read/billing:write)
+  4   rate-limited
+  5   company not found
+
+
+.SH OPTIONS
+\fB--from\fP=""
+	First day, YYYY-MM-DD (default: 30 days ago)
+
+.PP
+\fB-h\fP, \fB--help\fP[=false]
+	help for export
+
+.PP
+\fB--out\fP=""
+	Write the CSV to this file instead of stdout
+
+.PP
+\fB--to\fP=""
+	Last day, YYYY-MM-DD (default: today)
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+\fB--api-url\fP=""
+	API base URL (env: BCDOCK_API_URL)
+
+.PP
+\fB--no-color\fP[=false]
+	Disable colored output
+
+.PP
+\fB-o\fP, \fB--output\fP="table"
+	Output format: table, json, csv
+
+.PP
+\fB-q\fP, \fB--quiet\fP[=false]
+	Suppress non-essential output
+
+.PP
+\fB--timeout\fP=30s
+	Request timeout
+
+.PP
+\fB--token\fP=""
+	API token (env: BCDOCK_TOKEN)
+
+
+.SH EXAMPLE
+.EX
+  bcdock me billing export > usage.csv
+  bcdock me billing export --from 2026-09-01 --to 2026-09-30 --out september.csv
+.EE
+
+
+.SH SEE ALSO
+\fBbcdock-me-billing(1)\fP
